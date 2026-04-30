@@ -125,17 +125,7 @@ model-viewer {
 </div>
 
 
-<script>
-const mv = document.querySelector('#mv');
 
-mv.addEventListener('load', () => {
-  mv.model.materials.forEach((mat) => {
-    mat.pbrMetallicRoughness.setBaseColorFactor([1, 1, 1, 1]);
-  });
-
-  mv.style.opacity = 1;
-});
-</script>
 
 <model-viewer
   id="mv"
@@ -151,7 +141,7 @@ mv.addEventListener('load', () => {
   shadow-softness="0.6"
   camera-orbit="auto auto auto"
   field-of-view="auto">
-  
+  title= " 12strings_小天使琴 "
 </model-viewer>
 
  <script>
@@ -159,6 +149,17 @@ mv.addEventListener('load', () => {
     document.title = mv.title;
   </script>
 
+<script>
+const mv = document.querySelector('#mv');
+
+mv.addEventListener('load', () => {
+  mv.model.materials.forEach((mat) => {
+    mat.pbrMetallicRoughness.setBaseColorFactor([1, 1, 1, 1]);
+  });
+
+  mv.style.opacity = 1;
+});
+</script>
 
 <script type="module">
 const mv = document.querySelector("#mv");
