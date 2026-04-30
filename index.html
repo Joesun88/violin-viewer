@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title> Violin2 </title>
+<title>Violin Configurator</title>
 
 <script type="module"
   src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js">
@@ -93,9 +93,6 @@ model-viewer {
 </head>
 <body>
 
-
- 
-
 <div class="panel collapsed" id="controlPanel">
 
   <button class="toggle-btn" onclick="togglePanel()">?</button>
@@ -124,9 +121,6 @@ model-viewer {
   </div>
 </div>
 
-
-
-
 <model-viewer
   id="mv"
   src="Violin-v1.glb"
@@ -141,13 +135,7 @@ model-viewer {
   shadow-softness="0.6"
   camera-orbit="auto auto auto"
   field-of-view="auto">
-  title= " 12strings_小天使琴 "
 </model-viewer>
-
- <script>
-    const mv = document.getElementById("mv");
-    document.title = mv.title;
-  </script>
 
 <script>
 const mv = document.querySelector('#mv');
