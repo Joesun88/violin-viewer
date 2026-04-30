@@ -80,5 +80,18 @@
 
 </model-viewer>
 
+<script type="module">
+const mv = document.querySelector("model-viewer");
+
+mv.addEventListener("load", () => {
+  mv.model.materials.forEach((mat) => {
+    const pbr = mat.pbrMetallicRoughness;
+
+    pbr.setMetallicFactor(0.1);
+    pbr.setRoughnessFactor(0.25);
+  });
+});
+</script>
+
 </body>
 </html>
