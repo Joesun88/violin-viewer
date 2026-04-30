@@ -1,59 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Violin Viewer</title>
+  <script type="module"
+    src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+  </script>
 
-<script type="module"
-  src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js">
-</script>
+  <style>
+    body {
+      margin: 0;
+      background: #f5f5f5;
+    }
 
-<style>
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background: #f5f5f5;
-}
+    model-viewer {
+      width: 100%;
+      height: 100vh;
+      background: #ffffff;
+    }
 
-model-viewer {
-  width: 100vw;
-  height: 100vh;
-  display: block;
-  background: #ffffff;
-}
-</style>
+    #ar-button {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 8px;
+      background: #000;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .progress-bar {
+      display: block;
+      width: 100%;
+      height: 4px;
+      background: #ddd;
+    }
+
+    .update-bar {
+      width: 0%;
+      height: 100%;
+      background: #000;
+    }
+  </style>
 </head>
-
 <body>
 
 <model-viewer
-  src="./Violin-v1.glb"
-  poster="./poster.webp"
+  src="Violin-v1.glb"
+  poster="poster.webp"
+
+  ar
+  ar-modes="scene-viewer webxr quick-look"
 
   camera-controls
-  auto-rotate
-  rotation-per-second="15deg"
 
-  environment-image="https://modelviewer.dev/shared-assets/environments/spruit_sunrise_1k_HDR.hdr"
   tone-mapping="neutral"
-  exposure="0.75"
-
   shadow-intensity="1"
-  shadow-softness="0.6"
 
-  camera-orbit="auto auto auto"
-  field-of-view="auto"
+  camera-orbit="19.98deg 41.13deg 13.23m"
+  field-of-view="30deg">
 
-  min-camera-orbit="auto 20deg auto"
-  max-camera-orbit="auto 160deg auto"
+  <div class="progress-bar hide" slot="progress-bar">
+    <div class="update-bar"></div>
+  </div>
 
-  min-field-of-view="20deg"
-  max-field-of-view="45deg">
+  <button slot="ar-button" id="ar-button">
+    View in your space
+  </button>
+
+  <div id="ar-prompt">
+    <img src="https://modelviewer.dev/shared-assets/icons/hand.png">
+  </div>
 
 </model-viewer>
 
