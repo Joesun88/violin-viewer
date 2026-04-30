@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Violin Material Configurator</title>
+<title>Violin Configurator</title>
 
 <script type="module"
   src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js">
@@ -24,19 +24,55 @@ model-viewer {
   background: #f5f5f5;
 }
 
+/* ===== Floating Panel ===== */
 .panel {
   position: fixed;
   top: 20px;
   left: 20px;
-  background: rgba(255,255,255,0.92);
+  width: 260px;
+  max-height: 90vh;
+  overflow-y: auto;
+
+  background: rgba(255,255,255,0.95);
   padding: 16px;
   border-radius: 14px;
   box-shadow: 0 4px 18px rgba(0,0,0,0.18);
+
   z-index: 10;
-  width: 220px;
+  transition: all 0.25s ease;
 }
 
-.panel button {
+/* 收合狀態 */
+.panel.collapsed {
+  width: 52px;
+  height: 52px;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* Toggle Button */
+.toggle-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+
+  width: 36px;
+  height: 36px;
+
+  border: none;
+  border-radius: 10px;
+  background: #222;
+  color: white;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+/* 收合時隱藏內容 */     
+.panel.collapsed .panel-content {
+  display: none;
+}
+
+.panel button.action {
   display: block;
   width: 100%;
   margin: 6px 0;
@@ -49,57 +85,54 @@ model-viewer {
   margin-top: 12px;
   font-size: 14px;
 }
+
+.panel input[type="range"] {
+  width: 100%;
+}
 </style>
 </head>
 <body>
 
-<div class="panel">
+<div class="panel collapsed" id="controlPanel">
 
-  <strong>Wood Texture</strong>
-  <button onclick="setWood('wood-light.jpg')">Light Wood</button>
-  <button onclick="setWood('wood-dark.jpg')">Dark Wood</button>
-  <button onclick="setWood('wood-red.jpg')">Red Wood</button>
+  <button class="toggle-btn" onclick="togglePanel()">?</button>
 
-  <strong>Tint</strong>
-  <button onclick="setTint(1,1,1)">Normal</button>
-  <button onclick="setTint(1,0.92,0.85)">Warm</button>
-  <button onclick="setTint(0.8,0.8,0.8)">Gray</button>
+  <div class="panel-content">
 
-  <strong>Finish</strong>
-  <button onclick="setFinish(0,0.65)">Matte Wood</button>
-  <button onclick="setFinish(0,0.25)">Gloss Lacquer</button>
-  <button onclick="setFinish(0.8,0.15)">Metal Look</button>
+    <strong>Wood Texture</strong>
+    <button class="action" onclick="setWood('wood-light.jpg')">Light Wood</button>
+    <button class="action" onclick="setWood('wood-dark.jpg')">Dark Wood</button>
+    <button class="action" onclick="setWood('wood-red.jpg')">Red Wood</button>
 
-  <label>
-    Brightness:
-    <span id="brightnessValue">0.80</span>
-  </label>
-  <input
-    type="range"
-    id="brightnessSlider"
-    min="0.3"
-    max="2.0"
-    step="0.05"
-    value="0.8"
-    style="width:100%;">
+    <strong>Tint</strong>
+    <button class="action" onclick="setTint(1,1,1)">Normal</button>
+    <button class="action" onclick="setTint(1,0.92,0.85)">Warm</button>
+    <button class="action" onclick="setTint(0.8,0.8,0.8)">Gray</button>
+
+    <label>Brightness <span id="brightnessValue">0.80</span></label>
+    <input type="range" id="brightnessSlider" min="0.3" max="2" step="0.05" value="0.8">
+
+    <label>Metallic <span id="metallicValue">0.00</span></label>
+    <input type="range" id="metallicSlider" min="0" max="1" step="0.01" value="0">
+
+    <label>Roughness <span id="roughnessValue">0.25</span></label>
+    <input type="range" id="roughnessSlider" min="0" max="1" step="0.01" value="0.25">
+
+  </div>
 </div>
 
 <model-viewer
   id="mv"
   src="Violin-v1.glb"
   poster="poster.webp"
-
   camera-controls
   auto-rotate
   rotation-per-second="15deg"
-
   environment-image="https://modelviewer.dev/shared-assets/environments/spruit_sunrise_1k_HDR.hdr"
   tone-mapping="neutral"
   exposure="0.8"
-
   shadow-intensity="1"
   shadow-softness="0.6"
-
   camera-orbit="auto auto auto"
   field-of-view="auto">
 </model-viewer>
@@ -107,9 +140,12 @@ model-viewer {
 <script type="module">
 const mv = document.querySelector("#mv");
 
+window.togglePanel = function() {
+  document.querySelector("#controlPanel").classList.toggle("collapsed");
+};
+
 window.setWood = async function(textureUrl) {
   const tex = await mv.createTexture(textureUrl);
-
   mv.model.materials.forEach(mat => {
     if (mat.pbrMetallicRoughness.baseColorTexture) {
       mat.pbrMetallicRoughness.baseColorTexture.setTexture(tex);
@@ -123,19 +159,25 @@ window.setTint = function(r,g,b) {
   });
 };
 
-window.setFinish = function(metallic, roughness) {
-  mv.model.materials.forEach(mat => {
-    mat.pbrMetallicRoughness.setMetallicFactor(metallic);
-    mat.pbrMetallicRoughness.setRoughnessFactor(roughness);
-  });
-};
+function updateAllMaterials(callback){
+  mv.model.materials.forEach(mat => callback(mat.pbrMetallicRoughness));
+}
 
-const brightnessSlider = document.querySelector("#brightnessSlider");
-const brightnessValue = document.querySelector("#brightnessValue");
+brightnessSlider.addEventListener("input", e => {
+  mv.exposure = e.target.value;
+  brightnessValue.textContent = Number(e.target.value).toFixed(2);
+});
 
-brightnessSlider.addEventListener("input", () => {
-  mv.exposure = brightnessSlider.value;
-  brightnessValue.textContent = Number(brightnessSlider.value).toFixed(2);
+metallicSlider.addEventListener("input", e => {
+  const val = Number(e.target.value);
+  updateAllMaterials(pbr => pbr.setMetallicFactor(val));
+  metallicValue.textContent = val.toFixed(2);
+});
+
+roughnessSlider.addEventListener("input", e => {
+  const val = Number(e.target.value);
+  updateAllMaterials(pbr => pbr.setRoughnessFactor(val));
+  roughnessValue.textContent = val.toFixed(2);
 });
 </script>
 
