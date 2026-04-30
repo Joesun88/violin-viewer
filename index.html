@@ -93,6 +93,21 @@ model-viewer {
 </head>
 <body>
 
+<body>
+  <model-viewer
+    id="mv"
+    src="violin.glb"
+    title="小提琴"
+    auto-rotate
+    camera-controls>
+  </model-viewer>
+
+  <script>
+    const mv = document.getElementById("mv");
+    document.title = mv.title;
+  </script>
+</body>
+
 <div class="panel collapsed" id="controlPanel">
 
   <button class="toggle-btn" onclick="togglePanel()">?</button>
