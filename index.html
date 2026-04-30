@@ -1,18 +1,21 @@
 <script type="module"
-  src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+  src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js">
 </script>
 
 <model-viewer
-  src="Violin-v1.glb"
-  poster="poster.webp"
+  src="./Violin-v1.glb"
+  poster="./poster.webp"
 
   camera-controls
   auto-rotate
 
-  environment-image="studio"
+  environment-image="https://modelviewer.dev/shared-assets/environments/spruit_sunrise_1k_HDR.hdr"
+
   tone-mapping="neutral"
-  exposure="0.85"
+  exposure="0.75"
+
   shadow-intensity="1"
+  shadow-softness="0.6"
 
   camera-orbit="19.98deg 41.13deg 13.23m"
   field-of-view="30deg">
