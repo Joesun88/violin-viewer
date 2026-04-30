@@ -121,6 +121,20 @@ model-viewer {
   </div>
 </div>
 
+<model-viewer id="mv" src="model.glb" style="opacity:0;" auto-rotate camera-controls></model-viewer>
+
+<script>
+const mv = document.querySelector('#mv');
+
+mv.addEventListener('load', () => {
+  mv.model.materials.forEach((mat) => {
+    mat.pbrMetallicRoughness.setBaseColorFactor([1, 1, 1, 1]);
+  });
+
+  mv.style.opacity = 1;
+});
+</script>
+
 <model-viewer
   id="mv"
   src="Violin-v1.glb"
@@ -137,15 +151,7 @@ model-viewer {
   field-of-view="auto">
 </model-viewer>
 
-<script>
-const mv = document.querySelector('#mv');
 
-mv.addEventListener('load', () => {
-  mv.model.materials.forEach((mat) => {
-    mat.pbrMetallicRoughness.setBaseColorFactor([1, 1, 1, 1]);
-  });
-});
-</script>
 
 <script type="module">
 const mv = document.querySelector("#mv");
