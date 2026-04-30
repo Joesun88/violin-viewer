@@ -59,22 +59,14 @@ mv.addEventListener("load", () => {
 <model-viewer
   src="Violin-v1.glb"
   camera-controls
+  tone-mapping="neutral"
   environment-image="studio"
+  exposure="1.0"
   shadow-intensity="1"
-  exposure="0.85"
-  tone-mapping="neutral">
-
+  shadow-softness="0.6"
+  camera-orbit="19.98deg 41.13deg 13.23m"
+  field-of-view="30deg">
 </model-viewer>
-
-<script type="module">
-const mv = document.querySelector("model-viewer");
-
-mv.addEventListener("load", () => {
-  mv.model.materials.forEach((mat) => {
-    mat.pbrMetallicRoughness.setBaseColorFactor([0.5, 0.5, 0.5, 1]);
-  });
-});
-</script>
 
 
 </body>
