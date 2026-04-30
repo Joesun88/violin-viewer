@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Violin Material Configurator</title>
+<title>Violin Configurator</title>
 
 <script type="module"
   src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js">
@@ -28,12 +28,12 @@ model-viewer {
   position: fixed;
   top: 20px;
   left: 20px;
-  background: rgba(255,255,255,0.92);
+  background: rgba(255,255,255,0.94);
   padding: 16px;
   border-radius: 14px;
   box-shadow: 0 4px 18px rgba(0,0,0,0.18);
   z-index: 10;
-  width: 220px;
+  width: 240px;
 }
 
 .panel button {
@@ -48,6 +48,10 @@ model-viewer {
   display: block;
   margin-top: 12px;
   font-size: 14px;
+}
+
+.panel input[type="range"] {
+  width: 100%;
 }
 </style>
 </head>
@@ -65,23 +69,27 @@ model-viewer {
   <button onclick="setTint(1,0.92,0.85)">Warm</button>
   <button onclick="setTint(0.8,0.8,0.8)">Gray</button>
 
-  <strong>Finish</strong>
-  <button onclick="setFinish(0,0.65)">Matte Wood</button>
-  <button onclick="setFinish(0,0.25)">Gloss Lacquer</button>
-  <button onclick="setFinish(0.8,0.15)">Metal Look</button>
-
   <label>
     Brightness:
     <span id="brightnessValue">0.80</span>
   </label>
-  <input
-    type="range"
-    id="brightnessSlider"
-    min="0.3"
-    max="2.0"
-    step="0.05"
-    value="0.8"
-    style="width:100%;">
+  <input type="range" id="brightnessSlider"
+         min="0.3" max="2" step="0.05" value="0.8">
+
+  <label>
+    Metallic:
+    <span id="metallicValue">0.00</span>
+  </label>
+  <input type="range" id="metallicSlider"
+         min="0" max="1" step="0.01" value="0">
+
+  <label>
+    Roughness:
+    <span id="roughnessValue">0.25</span>
+  </label>
+  <input type="range" id="roughnessSlider"
+         min="0" max="1" step="0.01" value="0.25">
+
 </div>
 
 <model-viewer
@@ -123,19 +131,26 @@ window.setTint = function(r,g,b) {
   });
 };
 
-window.setFinish = function(metallic, roughness) {
-  mv.model.materials.forEach(mat => {
-    mat.pbrMetallicRoughness.setMetallicFactor(metallic);
-    mat.pbrMetallicRoughness.setRoughnessFactor(roughness);
-  });
-};
+function updateAllMaterials(callback){
+  mv.model.materials.forEach(mat => callback(mat.pbrMetallicRoughness));
+}
 
-const brightnessSlider = document.querySelector("#brightnessSlider");
-const brightnessValue = document.querySelector("#brightnessValue");
+document.querySelector("#brightnessSlider").addEventListener("input", e => {
+  mv.exposure = e.target.value;
+  document.querySelector("#brightnessValue").textContent =
+    Number(e.target.value).toFixed(2);
+});
 
-brightnessSlider.addEventListener("input", () => {
-  mv.exposure = brightnessSlider.value;
-  brightnessValue.textContent = Number(brightnessSlider.value).toFixed(2);
+document.querySelector("#metallicSlider").addEventListener("input", e => {
+  const val = Number(e.target.value);
+  updateAllMaterials(pbr => pbr.setMetallicFactor(val));
+  document.querySelector("#metallicValue").textContent = val.toFixed(2);
+});
+
+document.querySelector("#roughnessSlider").addEventListener("input", e => {
+  const val = Number(e.target.value);
+  updateAllMaterials(pbr => pbr.setRoughnessFactor(val));
+  document.querySelector("#roughnessValue").textContent = val.toFixed(2);
 });
 </script>
 
