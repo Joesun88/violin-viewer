@@ -137,6 +137,16 @@ model-viewer {
   field-of-view="auto">
 </model-viewer>
 
+<script>
+const mv = document.querySelector('#mv');
+
+mv.addEventListener('load', () => {
+  mv.model.materials.forEach((mat) => {
+    mat.pbrMetallicRoughness.setBaseColorFactor([1, 1, 1, 1]);
+  });
+});
+</script>
+
 <script type="module">
 const mv = document.querySelector("#mv");
 
