@@ -124,13 +124,6 @@ model-viewer {
   </div>
 </div>
 
-<model-viewer id="mv" src="violin.glb" style="opacity:0;" auto-rotate camera-controls title="天使里拉12弦"
-></model-viewer>
-
- <script>
-    const mv = document.getElementById("mv");
-    document.title = mv.title;
-  </script>
 
 <script>
 const mv = document.querySelector('#mv');
@@ -150,6 +143,7 @@ mv.addEventListener('load', () => {
   poster="poster.webp"
   camera-controls
   auto-rotate
+  title="12strings_小天使琴"
   rotation-per-second="15deg"
   environment-image="https://modelviewer.dev/shared-assets/environments/spruit_sunrise_1k_HDR.hdr"
   tone-mapping="neutral"
@@ -160,6 +154,10 @@ mv.addEventListener('load', () => {
   field-of-view="auto">
 </model-viewer>
 
+ <script>
+    const mv = document.getElementById("mv");
+    document.title = mv.title;
+  </script>
 
 
 <script type="module">
