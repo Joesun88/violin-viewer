@@ -1,6 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Violin Viewer</title>
 
 <script type="module"
   src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js">
@@ -9,28 +13,48 @@
 <style>
 html, body {
   margin: 0;
+  padding: 0;
+  width: 100%;
   height: 100%;
+  overflow: hidden;
+  background: #f5f5f5;
 }
 
 model-viewer {
   width: 100vw;
   height: 100vh;
   display: block;
+  background: #ffffff;
 }
 </style>
-
 </head>
 
 <body>
 
 <model-viewer
-  src="Violin-v1.glb"
-  poster="poster.webp"
+  src="./Violin-v1.glb"
+  poster="./poster.webp"
+
   camera-controls
   auto-rotate
-  environment-image="studio"
-  exposure="0.8"
-  shadow-intensity="1">
+  rotation-per-second="15deg"
+
+  environment-image="https://modelviewer.dev/shared-assets/environments/spruit_sunrise_1k_HDR.hdr"
+  tone-mapping="neutral"
+  exposure="0.75"
+
+  shadow-intensity="1"
+  shadow-softness="0.6"
+
+  camera-orbit="auto auto auto"
+  field-of-view="auto"
+
+  min-camera-orbit="auto 20deg auto"
+  max-camera-orbit="auto 160deg auto"
+
+  min-field-of-view="20deg"
+  max-field-of-view="45deg">
+
 </model-viewer>
 
 </body>
