@@ -1,0 +1,19 @@
+<model-viewer
+  src="Violin-v1.glb"
+  camera-controls
+  environment-image="studio"
+  shadow-intensity="1"
+  exposure="0.85"
+  tone-mapping="neutral">
+
+</model-viewer>
+
+<script type="module">
+const mv = document.querySelector("model-viewer");
+
+mv.addEventListener("load", () => {
+  mv.model.materials.forEach((mat) => {
+    mat.pbrMetallicRoughness.setBaseColorFactor([0.5, 0.5, 0.5, 1]);
+  });
+});
+</script>
