@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Violin Material Configurator</title>
+<title>Violin Viewer</title>
 
 <script type="module"
   src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js">
@@ -15,7 +15,6 @@ html, body {
   margin: 0;
   height: 100%;
   overflow: hidden;
-  font-family: Arial, sans-serif;
 }
 
 model-viewer {
@@ -29,33 +28,26 @@ model-viewer {
   top: 20px;
   left: 20px;
   background: rgba(255,255,255,0.9);
-  padding: 16px;
+  padding: 14px;
   border-radius: 12px;
   box-shadow: 0 4px 16px rgba(0,0,0,0.15);
   z-index: 10;
-}
-
-.panel button {
-  display: block;
-  margin: 6px 0;
-  width: 160px;
+  width: 220px;
 }
 </style>
 </head>
 <body>
 
 <div class="panel">
-  <button onclick="setWood('wood-light.jpg')">淺色_Light Wood</button>
-  <button onclick="setWood('wood-dark.jpg')">深色_Dark Wood</button>
-  <button onclick="setWood('wood-red.jpg')">竹色_Red Wood</button>
-
-  <button onclick="setTint(1,1,1)">Normal Color</button>
-  <button onclick="setTint(1,0.9,0.8)">Warm Tint</button>
-  <button onclick="setTint(0.8,0.8,0.8)">Gray Tint</button>
-
-  <button onclick="setFinish(0,0.65)">Matte Wood</button>
-  <button onclick="setFinish(0,0.25)">Gloss Lacquer</button>
-  <button onclick="setFinish(0.8,0.15)">Metal Parts</button>
+  <label>Brightness</label><br>
+  <input
+    type="range"
+    id="brightness"
+    min="0.3"
+    max="2"
+    step="0.05"
+    value="0.8">
+  <span id="brightnessValue">0.8</span>
 </div>
 
 <model-viewer
@@ -63,35 +55,20 @@ model-viewer {
   src="Violin-v1.glb"
   camera-controls
   auto-rotate
-  environment-image="studio"
   exposure="0.8"
+  environment-image="https://modelviewer.dev/shared-assets/environments/spruit_sunrise_1k_HDR.hdr"
   shadow-intensity="1">
 </model-viewer>
 
-<script type="module">
-const mv = document.querySelector("#mv");
+<script>
+const mv = document.getElementById("mv");
+const slider = document.getElementById("brightness");
+const value = document.getElementById("brightnessValue");
 
-window.setWood = async function(textureUrl) {
-  const tex = await mv.createTexture(textureUrl);
-  mv.model.materials.forEach(mat => {
-    if (mat.pbrMetallicRoughness.baseColorTexture) {
-      mat.pbrMetallicRoughness.baseColorTexture.setTexture(tex);
-    }
-  });
-};
-
-window.setTint = function(r,g,b) {
-  mv.model.materials.forEach(mat => {
-    mat.pbrMetallicRoughness.setBaseColorFactor([r,g,b,1]);
-  });
-};
-
-window.setFinish = function(metallic, roughness) {
-  mv.model.materials.forEach(mat => {
-    mat.pbrMetallicRoughness.setMetallicFactor(metallic);
-    mat.pbrMetallicRoughness.setRoughnessFactor(roughness);
-  });
-};
+slider.addEventListener("input", () => {
+  mv.exposure = slider.value;
+  value.textContent = slider.value;
+});
 </script>
 
 </body>
