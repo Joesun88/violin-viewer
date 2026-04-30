@@ -6,13 +6,6 @@
 
   <script type="module"
     src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
-const mv = document.querySelector("model-viewer");
-
-mv.addEventListener("load", () => {
-  const material = mv.model.materials[0];
-
-  material.pbrMetallicRoughness.setBaseColorFactor([0.5, 0.5, 0.5, 1]);
-});
   </script>
 
   <style>
@@ -55,19 +48,34 @@ mv.addEventListener("load", () => {
 </head>
 <body>
 
-
 <model-viewer
   src="Violin-v1.glb"
+  poster="poster.webp"
+
+  ar
+  ar-modes="scene-viewer webxr quick-look"
+
   camera-controls
+
   tone-mapping="neutral"
-  environment-image="studio"
-  exposure="1.0"
   shadow-intensity="1"
-  shadow-softness="0.6"
+
   camera-orbit="19.98deg 41.13deg 13.23m"
   field-of-view="30deg">
-</model-viewer>
 
+  <div class="progress-bar hide" slot="progress-bar">
+    <div class="update-bar"></div>
+  </div>
+
+  <button slot="ar-button" id="ar-button">
+    View in your space
+  </button>
+
+  <div id="ar-prompt">
+    <img src="https://modelviewer.dev/shared-assets/icons/hand.png">
+  </div>
+
+</model-viewer>
 
 </body>
 </html>
