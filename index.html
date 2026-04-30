@@ -6,6 +6,13 @@
 
   <script type="module"
     src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+const mv = document.querySelector("model-viewer");
+
+mv.addEventListener("load", () => {
+  const material = mv.model.materials[0];
+
+  material.pbrMetallicRoughness.setBaseColorFactor([0.5, 0.5, 0.5, 1]);
+});
   </script>
 
   <style>
