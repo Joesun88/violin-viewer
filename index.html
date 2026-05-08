@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title> 天使里拉琴16弦 </title>
+<title>Low-frequency magnetic</title>
 
 <script type="module"
   src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js">
@@ -24,7 +24,7 @@ model-viewer {
   background: #f5f5f5;
 }
 
-/* ===== Floating Panel ===== */
+/* ===== Floating Control Panel ===== */
 .panel {
   position: fixed;
   top: 20px;
@@ -38,11 +38,10 @@ model-viewer {
   border-radius: 14px;
   box-shadow: 0 4px 18px rgba(0,0,0,0.18);
 
-  z-index: 10;
+  z-index: 30;
   transition: all 0.25s ease;
 }
 
-/* 收合狀態 */
 .panel.collapsed {
   width: 52px;
   height: 52px;
@@ -50,7 +49,6 @@ model-viewer {
   overflow: hidden;
 }
 
-/* Toggle Button */
 .toggle-btn {
   position: absolute;
   top: 8px;
@@ -64,10 +62,9 @@ model-viewer {
   background: #222;
   color: white;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 16px;
 }
 
-/* 收合時隱藏內容 */     
 .panel.collapsed .panel-content {
   display: none;
 }
@@ -83,26 +80,79 @@ model-viewer {
 .panel label {
   display: block;
   margin-top: 12px;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .panel input[type="range"] {
   width: 100%;
 }
+
+ .company-info{
+  position: fixed;
+  bottom: 20px;
+  left: 28px;
+
+  font-size: 12px;
+  font-weight: bold;
+  background:#999;
+  color:green;
+  text-align: center;
+}
+
+.company-logo{
+  position: fixed;
+  bottom: 40px;
+  left: 16px;
+  
+  width: 12vw;
+  max-width: 140px;
+  min-width: 80px;
+  height: auto;
+}
+
+/* ===== Custom AR Button ===== */
+#custom-ar-btn{
+  position:absolute;
+  bottom:16px;
+  right:16px;
+
+  padding:10px 16px;
+  border:none;
+  border-radius:12px;
+
+  background:rgba(30,30,30,0.78);
+  color:white;
+
+  font-size:14px;
+  font-weight:600;
+
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+
+  box-shadow:0 4px 12px rgba(0,0,0,0.25);
+
+  cursor:pointer;
+  transition:all .2s ease; 
+}
+
+#custom-ar-btn:hover{
+  background:rgba(60,60,60,0.9);
+  transform:scale(1.05);
+}
 </style>
 </head>
 <body>
 
-<div class="panel collapsed" id="controlPanel">
 
-  <button class="toggle-btn" onclick="togglePanel()">?</button>
+<div class="panel collapsed" id="controlPanel">
+  <button class="toggle-btn" onclick="togglePanel()">☰</button>
 
   <div class="panel-content">
 
     <strong>Wood Texture</strong>
     <button class="action" onclick="setWood('wood-light.jpg')">Light Wood</button>
     <button class="action" onclick="setWood('wood-dark.jpg')">Dark Wood</button>
-    <button class="action" onclick="setWood('wood-red.jpg')">White Wood</button>
+    <button class="action" onclick="setWood('wood-red.jpg')">Red Wood</button>
 
     <strong>Tint</strong>
     <button class="action" onclick="setTint(1,1,1)">Normal</button>
@@ -110,7 +160,7 @@ model-viewer {
     <button class="action" onclick="setTint(0.8,0.8,0.8)">Gray</button>
 
     <label>Brightness <span id="brightnessValue">0.80</span></label>
-    <input type="range" id="brightnessSlider" min="0.3" max="20" step="0.05" value="0.8">
+    <input type="range" id="brightnessSlider" min="0.3" max="2" step="0.05" value="0.8">
 
     <label>Metallic <span id="metallicValue">0.00</span></label>
     <input type="range" id="metallicSlider" min="0" max="1" step="0.01" value="0">
@@ -125,57 +175,77 @@ model-viewer {
   id="mv"
   src="Violin-v1.glb"
   poster="poster.webp"
+
+  ar
+  ar-modes="webxr scene-viewer quick-look"
+  ar-scale="fixed"
+  ar-placement="floor"
+
   camera-controls
   auto-rotate
   rotation-per-second="15deg"
-  environment-image="https://modelviewer.dev/shared-assets/environments/spruit_sunrise_1k_HDR.hdr"
+
+/*  environment-image="https://modelviewer.dev/shared-assets/environments/spruit_sunrise_1k_HDR.hdr" */
+  environment-image="industrial_workshop_foundry_4k.hdr"
   tone-mapping="neutral"
   exposure="0.8"
   shadow-intensity="1"
   shadow-softness="0.6"
   camera-orbit="auto auto auto"
   field-of-view="auto">
-  Joesun Studio
+
+  <button slot="ar-button" id="custom-ar-btn">
+    📱 AR 實境預覽
+  </button>
+  
+<div class="company-info">
+ Joesun Studio<br>
+  
+</div>
+  
 </model-viewer>
 
-<model-viewer id="mv" src="violin.glb" auto-rotate camera-controls></model-viewer>
+/* <img src="logo.png" class="company-logo"> */
 
 <script>
-const mv = document.querySelector('#mv');
-
-mv.addEventListener('load', () => {
-  mv.model.materials.forEach((mat) => {
-    mat.pbrMetallicRoughness.setBaseColorFactor([0.68, 0.61, 0.54, 1]);
-  });
-});
-</script>
-
-<script type="module">
 const mv = document.querySelector("#mv");
 
-window.togglePanel = function() {
-  document.querySelector("#controlPanel").classList.toggle("collapsed");
-};
+/* 初始材質設定 */
+mv.addEventListener("load", () => {
+  mv.model.materials.forEach(mat => {
+    mat.pbrMetallicRoughness.setBaseColorFactor([1,0.82,0.15,0.3])
+  });
+});
 
-window.setWood = async function(textureUrl) {
+/* Panel Toggle */
+function togglePanel() {
+  document.querySelector("#controlPanel").classList.toggle("collapsed");
+}
+
+/* Texture Switch */
+async function setWood(textureUrl) {
   const tex = await mv.createTexture(textureUrl);
+
   mv.model.materials.forEach(mat => {
     if (mat.pbrMetallicRoughness.baseColorTexture) {
       mat.pbrMetallicRoughness.baseColorTexture.setTexture(tex);
     }
   });
-};
+}
 
-window.setTint = function(r,g,b) {
+/* Tint */
+function setTint(r,g,b) {
   mv.model.materials.forEach(mat => {
     mat.pbrMetallicRoughness.setBaseColorFactor([r,g,b,1]);
   });
-};
+}
 
+/* Utility */
 function updateAllMaterials(callback){
   mv.model.materials.forEach(mat => callback(mat.pbrMetallicRoughness));
 }
 
+/* Sliders */
 brightnessSlider.addEventListener("input", e => {
   mv.exposure = e.target.value;
   brightnessValue.textContent = Number(e.target.value).toFixed(2);
