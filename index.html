@@ -1,90 +1,56 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-widsth, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>方型盒</title>
+<title>天使里拉琴16弦</title>
 
 <script type="module"
-src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js">
+  src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js">
 </script>
 
 <style>
-
 html, body {
   margin: 0;
   height: 100%;
   overflow: hidden;
   font-family: Arial, sans-serif;
-
-  background: linear-gradient(
-    to bottom,
-    #f7f7f7,
-    #e7e7e7
-  );
 }
 
 model-viewer {
   width: 100vw;
   height: 100vh;
-  display: block;
-  background: transparent;
+  background: #f5f5f5;
 }
 
-/* ===== Floating Panel ===== */
-
+/* ===== Floating Control Panel ===== */
 .panel {
   position: fixed;
-  top: 18px;
-  left: 18px;
-
+  top: 20px;
+  left: 20px;
   width: 260px;
   max-height: 90vh;
-
   overflow-y: auto;
 
-  background: rgba(255,255,255,0.72);
-
-  backdrop-filter: blur(18px);
-
-  border-radius: 18px;
-
-  box-shadow:
-    0 8px 28px rgba(0,0,0,0.12);
-
-  z-index: 100;
-
-  transition: all 0.25s ease;
-
+  background: rgba(255,255,255,0.95);
   padding: 16px;
+  border-radius: 14px;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.18);
+
+  z-index: 30;
+  transition: all 0.25s ease;
 }
 
-/* collapsed */
-
 .panel.collapsed {
-
   width: 52px;
   height: 52px;
-
   padding: 0;
-
   overflow: hidden;
 }
 
-/* hide content */
-
-.panel.collapsed .panel-content {
-  display: none;
-}
-
-/* toggle */
-
 .toggle-btn {
-
   position: absolute;
-
   top: 8px;
   right: 8px;
 
@@ -92,400 +58,206 @@ model-viewer {
   height: 36px;
 
   border: none;
-
-  border-radius: 12px;
-
-  background: rgba(0,0,0,0.82);
-
+  border-radius: 10px;
+  background: #222;
   color: white;
-
   cursor: pointer;
+  font-size: 16px;
+}
 
-  font-size: 18px;
+.panel.collapsed .panel-content {
+  display: none;
 }
 
 .panel button.action {
-
   display: block;
-
   width: 100%;
-
   margin: 6px 0;
-
-  padding: 9px;
-
-  border: none;
-
-  border-radius: 10px;
-
-  background: #f1f1f1;
-
+  padding: 8px;
   cursor: pointer;
-
-  transition: 0.15s;
-}
-
-.panel button.action:hover {
-  background: #dddddd;
 }
 
 .panel label {
-
   display: block;
-
   margin-top: 12px;
-
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .panel input[type="range"] {
   width: 100%;
 }
 
-.section-title {
-
-  margin-top: 14px;
-  margin-bottom: 6px;
-
-  font-weight: bold;
-
-  font-size: 14px;
-}
-
-/* ===== company info ===== */
-
-.company-info {
-
+ .company-info{
   position: fixed;
-
-  left: 24px;
-  bottom: 24px;
-
-  z-index: 50;
-
-  padding: 14px 18px;
-
-  border-radius: 18px;
-
-  background: rgba(255,255,255,0.62);
-
-  backdrop-filter: blur(16px);
-
-  box-shadow:
-    0 6px 22px rgba(0,0,0,0.10);
-
-  color: #222;
-
-  line-height: 1.45;
-
-  font-size: 13px;
-
-  max-width: 260px;
-
-  text-align: center;
-}
-
-.company-info .title {
-
-  font-size: 16px;
-
-  font-weight: bold;
-
-  margin-bottom: 4px;
-}
-
-.company-info .sub {
-
-  color: #666;
+  bottom: 20px;
+  left: 20px;
 
   font-size: 12px;
+  font-weight: bold;
+  background:#999;
+  color:green;
 }
 
+.company-logo{
+  position: fixed;
+  bottom: 40px;
+  left: 20px;
+  
+  width: 12vw;
+  max-width: 160px;
+  min-width: 80px;
+  height: auto;
+}
+
+/* ===== Custom AR Button ===== */
+#custom-ar-btn{
+  position:absolute;
+  bottom:16px;
+  right:16px;
+
+  padding:10px 16px;
+  border:none;
+  border-radius:12px;
+
+  background:rgba(30,30,30,0.78);
+  color:white;
+
+  font-size:14px;
+  font-weight:600;
+
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+
+  box-shadow:0 4px 12px rgba(0,0,0,0.25);
+
+  cursor:pointer;
+  transition:all .2s ease; 
+}
+
+#custom-ar-btn:hover{
+  background:rgba(60,60,60,0.9);
+  transform:scale(1.05);
+}
 </style>
 </head>
-
 <body>
 
-<!-- ===== Control Panel ===== -->
 
 <div class="panel collapsed" id="controlPanel">
-
   <button class="toggle-btn" onclick="togglePanel()">☰</button>
 
   <div class="panel-content">
 
-    <div class="section-title">
-      Apple Metal
-    </div>
+    <strong>Wood Texture</strong>
+    <button class="action" onclick="setWood('wood-light.jpg')">Light Wood</button>
+    <button class="action" onclick="setWood('wood-dark.jpg')">Dark Wood</button>
+    <button class="action" onclick="setWood('wood-red.jpg')">Red Wood</button>
 
-    <button class="action" onclick="setAppleSilver()">
-      Apple Silver
-    </button>
+    <strong>Tint</strong>
+    <button class="action" onclick="setTint(1,1,1)">Normal</button>
+    <button class="action" onclick="setTint(1,0.92,0.85)">Warm</button>
+    <button class="action" onclick="setTint(0.8,0.8,0.8)">Gray</button>
 
-    <button class="action" onclick="setAppleSpaceGray()">
-      Space Gray
-    </button>
+    <label>Brightness <span id="brightnessValue">0.80</span></label>
+    <input type="range" id="brightnessSlider" min="0.3" max="2" step="0.05" value="0.8">
 
-    <button class="action" onclick="setAppleBlack()">
-      Black Titanium
-    </button>
+    <label>Metallic <span id="metallicValue">0.00</span></label>
+    <input type="range" id="metallicSlider" min="0" max="1" step="0.01" value="0">
 
-    <button class="action" onclick="setAppleGold()">
-      Apple Gold
-    </button>
-
-    <div class="section-title">
-      Wood Texture
-    </div>
-
-    <button class="action" onclick="setWood('wood-light.jpg')">
-      Light Wood
-    </button>
-
-    <button class="action" onclick="setWood('wood-dark.jpg')">
-      Dark Wood
-    </button>
-
-    <button class="action" onclick="setWood('wood-red.jpg')">
-      Red Wood
-    </button>
-
-    <div class="section-title">
-      Tint
-    </div>
-
-    <button class="action" onclick="setTint(1,1,1)">
-      Normal
-    </button>
-
-    <button class="action" onclick="setTint(0.85,0.88,0.95)">
-      Cool Silver
-    </button>
-
-    <button class="action" onclick="setTint(0.8,0.8,0.8)">
-      Gray
-    </button>
-
-    <label>
-      Brightness:
-      <span id="brightnessValue">0.72</span>
-    </label>
-
-    <input
-      type="range"
-      id="brightnessSlider"
-      min="0.3"
-      max="2"
-      step="0.01"
-      value="0.72">
-
-    <label>
-      Metallic:
-      <span id="metallicValue">1.00</span>
-    </label>
-
-    <input
-      type="range"
-      id="metallicSlider"
-      min="0"
-      max="1"
-      step="0.01"
-      value="1">
-
-    <label>
-      Roughness:
-      <span id="roughnessValue">0.18</span>
-    </label>
-
-    <input
-      type="range"
-      id="roughnessSlider"
-      min="0"
-      max="1"
-      step="0.01"
-      value="0.18">
+    <label>Roughness <span id="roughnessValue">0.25</span></label>
+    <input type="range" id="roughnessSlider" min="0" max="1" step="0.01" value="0.25">
 
   </div>
-
 </div>
-
-<!-- ===== Company Info ===== -->
-
-<div class="company-info">
-
-  <div class="title">
-    Joesun Studio
-  </div>
-
-  <div>
-    請徐先生 確認_謝謝
-  </div>
-
-  <div class="sub">
-     
-  </div>
-
-</div>
-
-<!-- ===== MODEL VIEWER ===== -->
 
 <model-viewer
-
   id="mv"
-
   src="Violin-v1.glb"
-
   poster="poster.webp"
 
+  ar
+  ar-modes="webxr scene-viewer quick-look"
+  ar-scale="fixed"
+  ar-placement="floor"
+
   camera-controls
-
   auto-rotate
+  rotation-per-second="15deg"
 
-  rotation-per-second="12deg"
-
-  autoplay
-
-  environment-image="neutral"
-
+  environment-image="https://modelviewer.dev/shared-assets/environments/spruit_sunrise_1k_HDR.hdr"
   tone-mapping="neutral"
-
-  exposure="0.72"
-
+  exposure="0.8"
   shadow-intensity="1"
-
-  shadow-softness="0.8"
-
+  shadow-softness="0.6"
   camera-orbit="auto auto auto"
-
   field-of-view="auto">
 
+  <button slot="ar-button" id="custom-ar-btn">
+    📱 AR 實境預覽
+  </button>
+<div class="company-info">
+ Joesun Studio<br>
+  0937-230075
+</div>
 </model-viewer>
 
-<script type="module">
+<img src="logo.png" class="company-logo">
 
+<script>
 const mv = document.querySelector("#mv");
 
-/* ===== panel ===== */
-
-window.togglePanel = function(){
-
-  document
-    .querySelector("#controlPanel")
-    .classList
-    .toggle("collapsed");
-};
-
-/* ===== initial apple silver ===== */
-
+/* 初始材質設定 */
 mv.addEventListener("load", () => {
-
-  setAppleSilver();
-
+  mv.model.materials.forEach(mat => {
+    mat.pbrMetallicRoughness.setBaseColorFactor([1,1,1,1]);
+  });
 });
 
-/* ===== textures ===== */
+/* Panel Toggle */
+function togglePanel() {
+  document.querySelector("#controlPanel").classList.toggle("collapsed");
+}
 
-window.setWood = async function(textureUrl){
-
+/* Texture Switch */
+async function setWood(textureUrl) {
   const tex = await mv.createTexture(textureUrl);
 
   mv.model.materials.forEach(mat => {
-
-    if(mat.pbrMetallicRoughness.baseColorTexture){
-
-      mat
-        .pbrMetallicRoughness
-        .baseColorTexture
-        .setTexture(tex);
+    if (mat.pbrMetallicRoughness.baseColorTexture) {
+      mat.pbrMetallicRoughness.baseColorTexture.setTexture(tex);
     }
-  });
-};
-
-/* ===== tint ===== */
-
-window.setTint = function(r,g,b){
-
-  mv.model.materials.forEach(mat => {
-
-    mat
-      .pbrMetallicRoughness
-      .setBaseColorFactor([r,g,b,1]);
-
-  });
-};
-
-/* ===== apple presets ===== */
-
-window.setAppleSilver = function(){
-
-  mv.exposure = 0.72;
-
-  mv.model.materials.forEach(mat => {
-
-    const pbr = mat.pbrMetallicRoughness;
-
-    pbr.setBaseColorFactor([0.72,0.74,0.78,1]);
-
-    pbr.setMetallicFactor(1.0);
-
-    pbr.setRoughnessFactor(0.18);
-
-  });
-
-  brightnessSlider.value = 0.72;
-  metallicSlider.value = 1.0;
-  roughnessSlider.value = 0.18;
-
-  brightnessValue.textContent = "0.72";
-  metallicValue.textContent = "1.00";
-  roughnessValue.textContent = "0.18";
-};
-
-/* ===== sliders ===== */
-
-function updateAllMaterials(callback){
-
-  mv.model.materials.forEach(mat => {
-
-    callback(mat.pbrMetallicRoughness);
-
   });
 }
 
+/* Tint */
+function setTint(r,g,b) {
+  mv.model.materials.forEach(mat => {
+    mat.pbrMetallicRoughness.setBaseColorFactor([r,g,b,1]);
+  });
+}
+
+/* Utility */
+function updateAllMaterials(callback){
+  mv.model.materials.forEach(mat => callback(mat.pbrMetallicRoughness));
+}
+
+/* Sliders */
 brightnessSlider.addEventListener("input", e => {
-
   mv.exposure = e.target.value;
-
-  brightnessValue.textContent =
-    Number(e.target.value).toFixed(2);
+  brightnessValue.textContent = Number(e.target.value).toFixed(2);
 });
 
 metallicSlider.addEventListener("input", e => {
-
   const val = Number(e.target.value);
-
-  updateAllMaterials(pbr => {
-
-    pbr.setMetallicFactor(val);
-
-  });
-
+  updateAllMaterials(pbr => pbr.setMetallicFactor(val));
   metallicValue.textContent = val.toFixed(2);
 });
 
 roughnessSlider.addEventListener("input", e => {
-
   const val = Number(e.target.value);
-
-  updateAllMaterials(pbr => {
-
-    pbr.setRoughnessFactor(val);
-
-  });
-
+  updateAllMaterials(pbr => pbr.setRoughnessFactor(val));
   roughnessValue.textContent = val.toFixed(2);
 });
-
 </script>
 
 </body>
